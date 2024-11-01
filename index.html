@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🔀 Mappinator</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Your custom CSS file -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="my-4">🔀 Mappinator</h1>
+
+    <!-- Nav Tabs -->
+    <ul class="nav nav-tabs" id="fileTypeTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="csv-tab" data-toggle="tab" href="#csv" role="tab" aria-controls="csv" aria-selected="true">CSV</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="json-tab" data-toggle="tab" href="#json" role="tab" aria-controls="json" aria-selected="false">JSON</a>
+      </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="fileTypeTabContent">
+      <!-- CSV Tab -->
+      <div class="tab-pane fade show active" id="csv" role="tabpanel" aria-labelledby="csv-tab">
+        <!-- Content for CSV files -->
+        <!-- Custom Names for CSV Files -->
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="customNameA">Custom Name for the First System:</label>
+              <input type="text" class="form-control" id="customNameA" placeholder="Enter name" value="System A">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="customNameB">Custom Name for the Second System:</label>
+              <input type="text" class="form-control" id="customNameB" placeholder="Enter name" value="System B">
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset and Export Buttons for CSV -->
+        <div class="row my-4">
+          <div class="col-6">
+            <button id="resetButton" class="btn btn-secondary btn-block">Reset</button>
+          </div>
+          <div class="col-6">
+            <button id="downloadMapping" class="btn btn-primary btn-block" disabled>Download Mapping</button>
+          </div>
+        </div>
+
+        <!-- File Upload and Delimiter Selector -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="fileA">Upload the First CSV File:</label>
+              <input type="file" class="form-control-file" id="fileA" accept=".csv">
+              <label class="mt-4" for="delimiterA">Delimiter:</label>
+              <input type="text" class="form-control d-inline-block" id="delimiterA" value="," maxlength="1" style="width: 50px;">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="fileB">Upload the Second CSV File:</label>
+              <input type="file" class="form-control-file" id="fileB" accept=".csv">
+              <label class="mt-4" for="delimiterB">Delimiter:</label>
+              <input type="text" class="form-control d-inline-block" id="delimiterB" value="," maxlength="1" style="width: 50px;">
+            </div>
+          </div>
+        </div>
+
+        <!-- Fields Section and Canvas for CSV -->
+        <div class="fields-section position-relative">
+          <!-- Canvas -->
+          <canvas id="connectionCanvas"></canvas>
+          <div class="row">
+            <div class="col-md-5">
+              <div id="fieldsA" class="fields-list">
+                <!-- Fields of the First CSV File -->
+              </div>
+            </div>
+            <div class="col-md-2">
+              <!-- Empty space or placeholder -->
+            </div>
+            <div class="col-md-5">
+              <div id="fieldsB" class="fields-list">
+                <!-- Fields of the Second CSV File -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview of Mappings for CSV -->
+        <div class="row my-4">
+          <div class="col-12">
+            <h2>CSV Mappings Preview</h2>
+            <table class="table table-bordered" id="previewTable">
+              <thead>
+                <tr>
+                  <th id="previewSourceField">Source Field</th>
+                  <th>Sample Value</th>
+                  <th id="previewTargetField">Target Field</th>
+                  <th>Sample Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Preview rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- JSON Tab -->
+      <div class="tab-pane fade" id="json" role="tabpanel" aria-labelledby="json-tab">
+        <!-- Content for JSON files -->
+        <div class="container mt-4">
+          <!-- Custom Names for JSON Files -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="customNameJsonA">Custom Name for the First System:</label>
+                <input type="text" class="form-control" id="customNameJsonA" placeholder="Enter name" value="System A">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="customNameJsonB">Custom Name for the Second System:</label>
+                <input type="text" class="form-control" id="customNameJsonB" placeholder="Enter name" value="System B">
+              </div>
+            </div>
+          </div>
+
+          <!-- Reset and Export Buttons for JSON -->
+          <div class="row my-4">
+            <div class="col-6">
+              <button id="resetButtonJson" class="btn btn-secondary btn-block">Reset</button>
+            </div>
+            <div class="col-6">
+              <button id="downloadMappingJson" class="btn btn-primary btn-block" disabled>Download Mapping</button>
+            </div>
+          </div>
+
+          <!-- File Upload for JSON -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="fileJsonA">Upload the First JSON File:</label>
+                <input type="file" class="form-control-file" id="fileJsonA" accept=".json">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="fileJsonB">Upload the Second JSON File:</label>
+                <input type="file" class="form-control-file" id="fileJsonB" accept=".json">
+              </div>
+            </div>
+          </div>
+
+          <!-- Fields Section and Canvas for JSON -->
+          <div class="fields-section-json position-relative">
+            <!-- Canvas -->
+            <canvas id="connectionCanvasJson"></canvas>
+            <div class="row">
+              <div class="col-md-5">
+                <div id="fieldsJsonA" class="fields-list">
+                  <!-- Fields of the First JSON File -->
+                </div>
+              </div>
+              <div class="col-md-2">
+                <!-- Empty space or placeholder -->
+              </div>
+              <div class="col-md-5">
+                <div id="fieldsJsonB" class="fields-list">
+                  <!-- Fields of the Second JSON File -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preview of Mappings for JSON -->
+          <div class="row my-4">
+            <div class="col-12">
+              <h2>JSON Mappings Preview</h2>
+              <table class="table table-bordered" id="previewTableJson">
+                <thead>
+                  <tr>
+                    <th id="previewSourceFieldJson">Source Field</th>
+                    <th>Sample Value</th>
+                    <th id="previewTargetFieldJson">Target Field</th>
+                    <th>Sample Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Preview rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include jQuery and Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Your custom JavaScript file -->
+  <script src="script.js"></script>
+</body>
+</html>

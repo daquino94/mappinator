@@ -1,0 +1,54 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Mac system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Local server config files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Generated output
+dist/
+build/
+
+# Ignore local server directories
+.tmp/
+.httplive/
+
+# Coverage directories
+coverage/
+
+# Static site build output
+out/
+
+examples/

@@ -1,0 +1,82 @@
+/* style.css */
+
+/* Styles for both CSV and JSON */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.fields-list {
+  border: 1px solid #ccc;
+  min-height: 500px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.field-item {
+  padding: 8px;
+  margin: 4px 0;
+  background-color: #f8f9fa;
+  cursor: move;
+  user-select: none;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.field-item.dragging {
+  opacity: 0.5;
+}
+
+.fields-section {
+  position: relative;
+}
+
+#connectionCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.field-item {
+  position: relative;
+  z-index: 2;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.form-group input[type="text"] {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.row.my-4 {
+  margin-top: 20px;
+}
+
+/* Styles for JSON */
+
+.fields-section-json {
+  position: relative;
+}
+
+#connectionCanvasJson {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.field-item-json {
+  position: relative;
+  z-index: 2;
+}

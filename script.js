@@ -149,7 +149,11 @@ function handleDragOver(e) {
 
 function handleDrop(e) {
   e.stopPropagation();
-  if (dragSource !== this && dragSource.parentNode !== this.parentNode) {
+
+  const isDragSourceLeft = dragSource.closest('.left-fields');
+  const isTargetRight = this.closest('.right-fields');
+
+  if (dragSource !== this && isDragSourceLeft && isTargetRight) {
     // Avoid duplicates
     const mappingExists = mappings.some(mapping =>
       (mapping.source === dragSource.id && mapping.target === this.id) ||
@@ -480,8 +484,11 @@ function handleDragOverJson(e) {
 
 function handleDropJson(e) {
   e.stopPropagation();
-  if (dragSourceJson !== this && dragSourceJson.parentNode !== this.parentNode) {
+
+  const isDragSourceLeft = dragSourceJson.closest('.left-fields');
+  const isTargetRight = this.closest('.right-fields');
     // Avoid duplicates
+  if (dragSourceJson !== this && isDragSourceLeft && isTargetRight) {
     const mappingExists = mappingsJson.some(mapping =>
       (mapping.source === dragSourceJson.id && mapping.target === this.id) ||
       (mapping.source === this.id && mapping.target === dragSourceJson.id)

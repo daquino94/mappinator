@@ -31,6 +31,8 @@ window.addEventListener('resize', adjustCanvasSize);
 customNameInputA.addEventListener('input', updateCustomNames);
 customNameInputB.addEventListener('input', updateCustomNames);
 
+canvas.addEventListener('click', handleCanvasClick);
+
 let arrows = [];
 
 function handleFileA(event) {
@@ -84,14 +86,10 @@ function inferTypes(data) {
     let type = 'String'; // Default
     for (let row of data) {
       const value = row[i];
-      if (value !== undefined && value !== null && value.trim() !== '') {
-        if (!isNaN(value)) {
-          type = 'Number';
-        } else if (isValidDate(value)) {
-          type = 'Date';
-        } else if (value.toLowerCase() === 'true' || value.toLowerCase() === 'false') {
-          type = 'Boolean';
-        }
+      if (value !== undefined && value.trim() !== '') {
+        if (!isNaN(value)) type = 'Number';
+        else if (isValidDate(value)) type = 'Date';
+        else if (['true', 'false'].includes(value.toLowerCase())) type = 'Boolean';
         break;
       }
     }
@@ -114,7 +112,6 @@ function renderFields(fields, types, data, container, prefix) {
     div.draggable = true;
     div.id = prefix + '-' + index;
 
-    // Sample value
     const sampleValue = data[0] ? data[0][index] : 'N/A';
     const type = types[index] || 'String';
 
@@ -172,11 +169,37 @@ function handleDragEnd() {
   this.classList.remove('dragging');
 }
 
+function handleCanvasClick(e) {
+  const canvasRect = canvas.getBoundingClientRect();
+  const clickX = e.clientX - canvasRect.left;
+  const clickY = e.clientY - canvasRect.top;
+
+  for (let i = 0; i < arrows.length; i++) {
+    const { startX, startY, endX, endY } = arrows[i].path;
+    if (isPointNearLine(clickX, clickY, startX, startY, endX, endY)) {
+      mappings.splice(i, 1);
+      arrows.splice(i, 1);
+      drawConnections();
+      updatePreviewTable();
+      break;
+    }
+  }
+}
+
+function isPointNearLine(px, py, x1, y1, x2, y2, tolerance = 10) {
+  const lengthSquared = (x2 - x1) ** 2 + (y2 - y1) ** 2;
+  const t = Math.max(0, Math.min(1, ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / lengthSquared));
+  const projectionX = x1 + t * (x2 - x1);
+  const projectionY = y1 + t * (y2 - y1);
+
+  return Math.hypot(px - projectionX, py - projectionY) <= tolerance;
+}
+
 function drawConnections() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  arrows = []; // Reset arrow information
+  arrows = [];
 
-  mappings.forEach(mapping => {
+  mappings.forEach((mapping, index) => {
     const sourceElem = document.getElementById(mapping.source);
     const targetElem = document.getElementById(mapping.target);
 
@@ -334,6 +357,8 @@ window.addEventListener('resize', adjustCanvasSizeJson);
 customNameInputJsonA.addEventListener('input', updateCustomNamesJson);
 customNameInputJsonB.addEventListener('input', updateCustomNamesJson);
 
+canvasJson.addEventListener('click', handleCanvasClickJson);
+
 let arrowsJson = [];
 
 function handleFileJsonA(event) {
@@ -475,6 +500,23 @@ function handleDragEndJson() {
   this.classList.remove('dragging');
 }
 
+function handleCanvasClickJson(e) {
+  const canvasRect = canvasJson.getBoundingClientRect();
+  const clickX = e.clientX - canvasRect.left;
+  const clickY = e.clientY - canvasRect.top;
+
+  for (let i = 0; i < arrowsJson.length; i++) {
+    const { startX, startY, endX, endY } = arrowsJson[i].path;
+    if (isPointNearLine(clickX, clickY, startX, startY, endX, endY)) {
+      mappingsJson.splice(i, 1);
+      arrowsJson.splice(i, 1);
+      drawConnectionsJson();
+      updatePreviewTableJson();
+      break;
+    }
+  }
+}
+
 function drawConnectionsJson() {
   ctxJson.clearRect(0, 0, canvasJson.width, canvasJson.height);
   arrowsJson = [];
@@ -607,4 +649,13 @@ function updateCustomNamesJson() {
   renderFieldsJson(fieldsJsonB, dataJsonB, fieldsContainerJsonB, 'JsonB');
   updatePreviewTableJson();
   drawConnectionsJson();
+}
+
+function isPointNearLine(px, py, x1, y1, x2, y2, tolerance = 10) {
+  const lengthSquared = (x2 - x1) ** 2 + (y2 - y1) ** 2;
+  const t = Math.max(0, Math.min(1, ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / lengthSquared));
+  const projectionX = x1 + t * (x2 - x1);
+  const projectionY = y1 + t * (y2 - y1);
+
+  return Math.hypot(px - projectionX, py - projectionY) <= tolerance;
 }

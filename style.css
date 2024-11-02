@@ -21,6 +21,8 @@ body {
   user-select: none;
   border: 1px solid #ced4da;
   border-radius: 4px;
+  position: relative;
+  z-index: 2;
 }
 
 .field-item.dragging {
@@ -38,12 +40,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: 1;
-  pointer-events: none;
-}
-
-.field-item {
-  position: relative;
-  z-index: 2;
+  /* pointer-events: none; Rimosso per permettere i click */
 }
 
 .table td, .table th {
@@ -73,10 +70,10 @@ body {
   width: 100%;
   height: 100%;
   z-index: 1;
-  pointer-events: none;
+  /* pointer-events: none; Rimosso per permettere i click */
 }
 
 .field-item-json {
   position: relative;
-  z-index: 2;
+  z-index: 2; /* Assicura che gli elementi siano sopra il canvas */
 }
